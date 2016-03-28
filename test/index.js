@@ -13,9 +13,9 @@ describe('JobPricer', ()=> {
     expect(JobPricer).to.respondTo('constructor');
   });
   describe('FLAT MARKUP of 5%', ()=>{
-    it('#flatMarkup should apply a flat markup to all jobs of 5%', ()=> {
+    it('#getFlatMarkup should apply a flat markup to all jobs of 5%', ()=> {
       const price = 100;
-      let result = JobPricer.flatMarkup(price);
+      let result = JobPricer.getFlatMarkup(price);
       expect(result).to.equal(100 * 0.05);
     });
     it('#calculate should flat markup of 5% to final calculation', ()=> {
@@ -25,7 +25,7 @@ describe('JobPricer', ()=> {
     });
   });
   describe('Per-person markup of 1.2%', ()=>{
-    it('#markupPerPerson should apply a markup of 1.2% for each person that needs to work on the job', ()=> {
+    it('#getPeopleMarkup should apply a markup of 1.2% for each person that needs to work on the job', ()=> {
       const price = 100;
       const markupPerPerson = 0.012;
       const job1 = {
@@ -43,16 +43,16 @@ describe('JobPricer', ()=> {
       const expected1 = markupPerPerson * price;
       const expected2 = (markupPerPerson * job2.people) * price;
       const expected10 = (markupPerPerson * job10.people) * price;
-      let actual1 = JobPricer.perPersonMarkup(job1);
-      let actual2 = JobPricer.perPersonMarkup(job2);
-      let actual10 = JobPricer.perPersonMarkup(job10);
+      let actual1 = JobPricer.getPeopleMarkup(job1);
+      let actual2 = JobPricer.getPeopleMarkup(job2);
+      let actual10 = JobPricer.getPeopleMarkup(job10);
       expect(actual1).to.equal(expected1);
       expect(actual2).to.equal(expected2);
       expect(actual10).to.equal(expected10);
     });
     it('#calculate should add the 1.2% per person markup to the flatMarkup', ()=>{
       const price = 100;
-      const flatPrice = JobPricer.flatMarkup(price) + price;
+      const flatPrice = JobPricer.getFlatMarkup(price) + price;
       const markupPerPerson = 0.012;
       const job1 = {
         price,
@@ -76,6 +76,10 @@ describe('JobPricer', ()=> {
       let expected10 = (flatPrice * (job10.people * markupPerPerson)) + flatPrice;
       expect(actual10).to.equal(expected10);
     });
-  })
-
+  });
+  describe('Material markups', ()=>{
+    describe('Pharma markup of 7.5%', ()=>{
+      // describe('#')
+    });
+  });
 });

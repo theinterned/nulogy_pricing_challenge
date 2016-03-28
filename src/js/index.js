@@ -13,23 +13,23 @@ class JobPricer {
     }
     let calculation = Object.assign({}, defaults, options);
     const price = calculation.price;
-    const flatMarkup = this.flatMarkup(price) + price;
+    const flatMarkup = this.getFlatMarkup(price) + price;
     calculation.flatMarkup = flatMarkup;
-    const peopleMarkup = this.perPersonMarkup(calculation);
+    const peopleMarkup = this.getPeopleMarkup(calculation);
     const markup = flatMarkup + peopleMarkup;
     return markup;
   }
   static get markup() {
     return 0.05;
   }
-  static flatMarkup(basePrice) {
+  static getFlatMarkup(basePrice) {
     let markup = basePrice * this.markup;
     return markup;
   }
   static get markupPerPerson() {
     return 0.012;
   }
-  static perPersonMarkup(options){
+  static getPeopleMarkup(options){
     const price = options.flatMarkup || options.price; // if a flat markup isn't privided - fallback to use the price
     const markup = (options.people * this.markupPerPerson) * price;
     return markup;
