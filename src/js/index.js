@@ -62,7 +62,7 @@ class JobPricer {
     }
   }
   static getMarkupForCategories(options) {
-    if (typeof options === 'undefined' && typeof options.categories == 'undefined') {
+    if (typeof options === 'undefined' || typeof options.categories === 'undefined') {
       return [];
     }
     const categories = options.categories;

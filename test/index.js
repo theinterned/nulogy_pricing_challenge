@@ -111,6 +111,11 @@ describe('JobPricer', ()=> {
   });
   describe('Material category markups', ()=>{
     describe('#getMarkupForCategories', ()=>{
+      it('should return an empty array if no categories are passed', ()=>{
+        expect(JobPricer.getMarkupForCategories()).to.eql([]);
+        expect(JobPricer.getMarkupForCategories({})).to.eql([]);
+        expect(JobPricer.getMarkupForCategories({price:100})).to.eql([]);
+      });
       it('should map the array of categories to an array of calculated markups to apply', ()=>{
         const options = {
           price: 100,
