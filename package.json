@@ -7,5 +7,17 @@
     "test": "npm test"
   },
   "author": "Ned Schwartz",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-mocha": "^2.2.0",
+    "gulp-util": "^3.0.7",
+    "mocha": "^2.4.5"
+  },
+  "scripts": {
+    "test": "gulp test",
+    "test-watch": "gulp test-watch",
+    "start": "gulp start"
+  }
 }
