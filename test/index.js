@@ -12,11 +12,70 @@ describe('JobPricer', ()=> {
     expect(JobPricer).to.be.a('function');
     expect(JobPricer).to.respondTo('constructor');
   });
-  it('should apply a flat markup to all jobs of 5%', ()=> {
-    const price = 100;
-    let result = JobPricer.flatMarkup(price);
-    expect(result).to.equal(100 * 1.05);
-    result = JobPricer.calculate({price});
-    expect(result).to.equal(100 * 1.05);
+  describe('FLAT MARKUP of 5%', ()=>{
+    it('#flatMarkup should apply a flat markup to all jobs of 5%', ()=> {
+      const price = 100;
+      let result = JobPricer.flatMarkup(price);
+      expect(result).to.equal(100 * 0.05);
+    });
+    it('#calculate should flat markup of 5% to final calculation', ()=> {
+      const price = 100;
+      let result = JobPricer.calculate({price});
+      expect(result).to.equal(100 * 1.05);
+    });
   });
+  describe('Per-person markup of 1.2%', ()=>{
+    it('#markupPerPerson should apply a markup of 1.2% for each person that needs to work on the job', ()=> {
+      const price = 100;
+      const markupPerPerson = 0.012;
+      const job1 = {
+        price,
+        people: 1
+      };
+      const job2 = {
+        price,
+        people: 2
+      };
+      const job10 = {
+        price,
+        people: 10
+      };
+      const expected1 = markupPerPerson * price;
+      const expected2 = (markupPerPerson * job2.people) * price;
+      const expected10 = (markupPerPerson * job10.people) * price;
+      let actual1 = JobPricer.perPersonMarkup(job1);
+      let actual2 = JobPricer.perPersonMarkup(job2);
+      let actual10 = JobPricer.perPersonMarkup(job10);
+      expect(actual1).to.equal(expected1);
+      expect(actual2).to.equal(expected2);
+      expect(actual10).to.equal(expected10);
+    });
+    it('#calculate should add the 1.2% per person markup to the flatMarkup', ()=>{
+      const price = 100;
+      const flatPrice = JobPricer.flatMarkup(price) + price;
+      const markupPerPerson = 0.012;
+      const job1 = {
+        price,
+        people: 1
+      };
+      const job2 = {
+        price,
+        people: 2
+      };
+      const job10 = {
+        price,
+        people: 10
+      };
+      let actual1 = JobPricer.calculate(job1);
+      let expected1 = (flatPrice * markupPerPerson) + flatPrice;
+      expect(actual1).to.equal(expected1);
+      let actual2 = JobPricer.calculate(job2);
+      let expected2 = (flatPrice * (job2.people * markupPerPerson)) + flatPrice;
+      expect(actual2).to.equal(expected2);
+      let actual10 = JobPricer.calculate(job10);
+      let expected10 = (flatPrice * (job10.people * markupPerPerson)) + flatPrice;
+      expect(actual10).to.equal(expected10);
+    });
+  })
+
 });

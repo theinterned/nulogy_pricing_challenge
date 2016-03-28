@@ -1,13 +1,6 @@
 "use strict";
 
 class JobPricer {
-  static get markup() {
-    return 1.05;
-  }
-  static flatMarkup(basePrice) {
-    let markup = basePrice * this.markup;
-    return markup;
-  }
   /**
    * The main calculate routine - this is the entry point for the JobPricer Library
    * @param  {[Object]} options         All args are passed as an object of named args
@@ -15,10 +8,30 @@ class JobPricer {
    */
   static calculate(options) {
     const defaults = {
-      price: 0
+      price: 0,
+      people: 0
     }
-    const args = Object.assign({}, defaults, options);
-    let markup = this.flatMarkup(options.price);
+    let calculation = Object.assign({}, defaults, options);
+    const price = calculation.price;
+    const flatMarkup = this.flatMarkup(price) + price;
+    calculation.flatMarkup = flatMarkup;
+    const peopleMarkup = this.perPersonMarkup(calculation);
+    const markup = flatMarkup + peopleMarkup;
+    return markup;
+  }
+  static get markup() {
+    return 0.05;
+  }
+  static flatMarkup(basePrice) {
+    let markup = basePrice * this.markup;
+    return markup;
+  }
+  static get markupPerPerson() {
+    return 0.012;
+  }
+  static perPersonMarkup(options){
+    const price = options.flatMarkup || options.price; // if a flat markup isn't privided - fallback to use the price
+    const markup = (options.people * this.markupPerPerson) * price;
     return markup;
   }
 }
