@@ -153,6 +153,9 @@ describe('JobPricer', ()=> {
           categories: ['pharma']
         })).to.eql([expected])
       });
+      it('should return the markups in the same order the categories are given');
+      it('should not apply the same markup multiple times even if the category appears in options.categories many times');
+      it("should not apply a markup for a category that isn't defined");
     });
     describe('#calculate should apply the material markups', ()=>{
       it('Should apply a single category markup to the fixedMarkup price', ()=>{
