@@ -1,0 +1,11 @@
+{
+  "name": "nulogy_pricing_challenge",
+  "version": "1.0.0",
+  "description": "Coding challenge for Nulogy job application",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "Ned Schwartz",
+  "license": "ISC"
+}
