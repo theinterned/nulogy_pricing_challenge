@@ -168,5 +168,18 @@ describe('JobPricer', ()=> {
         expect(actual).to.equal(expected);
       })
     });
+    it('Should apply multiple category markups to the fixedMarkup price', ()=>{
+      const price = 100;
+      const flatPrice = JobPricer.getFlatMarkup(price) + price;
+      const markupForFood = 0.13;
+      const markupForPharma = 0.075;
+      const job1 = {
+        price,
+        categories: ['food', 'pharma']
+      };
+      const expected = (flatPrice * markupForFood) + (flatPrice * markupForPharma) + flatPrice;
+      const actual = JobPricer.calculate(job1);
+      expect(actual).to.equal(expected);
+    });
   });
 });

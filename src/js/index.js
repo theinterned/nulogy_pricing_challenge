@@ -15,8 +15,13 @@ class JobPricer {
     const price = calculation.price;
     const flatMarkup = this.getFlatMarkup(price) + price;
     calculation.flatMarkup = flatMarkup;
+    // calculate any per person markup
     const peopleMarkup = this.getPeopleMarkup(calculation);
-    const markup = flatMarkup + peopleMarkup;
+    // calculate category markups
+    const categoryMarkupList = this.getMarkupForCategories(calculation);
+    const categoryMarkup = categoryMarkupList.reduce((prev, curr) => prev + curr, 0);
+    // the final calculation
+    const markup = flatMarkup + peopleMarkup + categoryMarkup;
     return markup;
   }
   static calculateMarkupForPrice(markup, options) {
