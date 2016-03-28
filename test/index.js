@@ -149,6 +149,19 @@ describe('JobPricer', ()=> {
         })).to.eql([expected])
       });
     });
+    describe('#calculate should apply the material markups', ()=>{
+      it('Should apply a single category markup to the fixedMarkup price', ()=>{
+        const price = 100;
+        const flatPrice = JobPricer.getFlatMarkup(price) + price;
+        const markupForFood = 0.13;
+        const job1 = {
+          price,
+          categories: ['food']
+        };
+        const expected = (flatPrice * markupForFood) + flatPrice;
+        const actual = JobPricer.calculate(job1);
+        expect(actual).to.equal(expected);
+      })
     });
   });
 });
