@@ -12,6 +12,24 @@ describe('JobPricer', ()=> {
     expect(JobPricer).to.be.a('function');
     expect(JobPricer).to.respondTo('constructor');
   });
+  describe('#calculateMarkupForPrice', ()=>{
+    it('should accept price as a number', ()=>{
+      expect(JobPricer.calculateMarkupForPrice(0.10, 100)).to.equal(10);
+      expect(JobPricer.calculateMarkupForPrice(0.10, 100.0)).to.equal(10);
+    });
+    it('should accept price as a options.flatMarkup', ()=>{
+      expect(JobPricer.calculateMarkupForPrice(0.10, {flatMarkup:100})).to.equal(10);
+    });
+    it('should accept price as a options.price', ()=>{
+      expect(JobPricer.calculateMarkupForPrice(0.10, {price:100})).to.equal(10);
+    });
+    it('should prefer options.flatMarkup over options.price', ()=>{
+      expect(JobPricer.calculateMarkupForPrice(0.10, {
+        flatMarkup:100,
+        price:200
+      })).to.equal(10);
+    });
+  });
   describe('FLAT MARKUP of 5%', ()=>{
     it('#getFlatMarkup should apply a flat markup to all jobs of 5%', ()=> {
       const price = 100;

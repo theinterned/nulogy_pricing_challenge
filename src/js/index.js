@@ -19,6 +19,18 @@ class JobPricer {
     const markup = flatMarkup + peopleMarkup;
     return markup;
   }
+  static calculateMarkupForPrice(markup, options) {
+    let price = 0;
+    switch (typeof options) {
+      case 'object':
+        price = options.flatMarkup || options.price; // if a flat markup isn't privided - fallback to use the price
+        break;
+      case 'number':
+        price = options;
+        break;
+    }
+    return markup * price;
+  }
   static get markup() {
     return 0.05;
   }
@@ -30,8 +42,7 @@ class JobPricer {
     return 0.012;
   }
   static getPeopleMarkup(options){
-    const price = options.flatMarkup || options.price; // if a flat markup isn't privided - fallback to use the price
-    const markup = (options.people * this.markupPerPerson) * price;
+    const markup = this.calculateMarkupForPrice(options.people * this.markupPerPerson, options);
     return markup;
   }
 }
