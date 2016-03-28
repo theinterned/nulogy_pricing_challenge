@@ -12,6 +12,20 @@ describe('JobPricer', ()=> {
     expect(JobPricer).to.be.a('function');
     expect(JobPricer).to.respondTo('constructor');
   });
+  it('should expose the markup for each category on a getter', ()=>{
+    expect(JobPricer).to.have.property('markup').that.equals(0.05);
+    expect(JobPricer).to.have.property('markupPerPerson').that.equals(0.012);
+    expect(JobPricer).to.have.property('markupForPharma').that.equals(0.075);
+    expect(JobPricer).to.have.property('markupForFood').that.equals(0.13);
+    expect(JobPricer).to.have.property('markupForElectronics').that.equals(0.02);
+  });
+  it('should expose a map of categories to their markup as a getter',()=>{
+    expect(JobPricer).to.have.property('categoryMarkupMap').that.eqls({
+      'electronics' : JobPricer.markupForElectronics,
+      'food'        : JobPricer.markupForFood,
+      'pharma'      : JobPricer.markupForPharma
+    })
+  });
   describe('#calculateMarkupForPrice', ()=>{
     it('should accept price as a number', ()=>{
       expect(JobPricer.calculateMarkupForPrice(0.10, 100)).to.equal(10);

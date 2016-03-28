@@ -45,6 +45,22 @@ class JobPricer {
     const markup = this.calculateMarkupForPrice(options.people * this.markupPerPerson, options);
     return markup;
   }
+  static get markupForElectronics() {
+    return 0.02;
+  }
+  static get markupForFood() {
+    return 0.13;
+  }
+  static get markupForPharma() {
+    return 0.075;
+  }
+  static get categoryMarkupMap() {
+    return {
+      electronics : this.markupForElectronics,
+      food        : this.markupForFood,
+      pharma      : this.markupForPharma
+    }
+  }
 }
 
 module.exports = JobPricer;
