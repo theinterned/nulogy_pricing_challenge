@@ -61,6 +61,18 @@ class JobPricer {
       pharma      : this.markupForPharma
     }
   }
+  static getMarkupForCategories(options) {
+    if (typeof options === 'undefined' && typeof options.categories == 'undefined') {
+      return [];
+    }
+    const categories = options.categories;
+    const markups = categories.map((cat)=>{
+      let markup = this.categoryMarkupMap[cat];
+      markup = this.calculateMarkupForPrice(markup, options);
+      return markup;
+    });
+    return markups;
+  }
 }
 
 module.exports = JobPricer;

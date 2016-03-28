@@ -109,9 +109,46 @@ describe('JobPricer', ()=> {
       expect(actual10).to.equal(expected10);
     });
   });
-  describe('Material markups', ()=>{
-    describe('Pharma markup of 7.5%', ()=>{
-      // describe('#')
+  describe('Material category markups', ()=>{
+    describe('#getMarkupForCategories', ()=>{
+      it('should map the array of categories to an array of calculated markups to apply', ()=>{
+        const options = {
+          price: 100,
+          categories: ['electronics', 'food', 'pharma']
+        }
+        const actual = JobPricer.getMarkupForCategories(options);
+        const expected = [
+          options.price * JobPricer.markupForElectronics,
+          options.price * JobPricer.markupForFood,
+          options.price * JobPricer.markupForPharma
+        ];
+        expect(actual).to.eql(expected);
+      });
+      it('should apply a Electronics markup of 2%', ()=>{
+        const price = 100;
+        const expected = price * 0.02;
+        expect(JobPricer.getMarkupForCategories({
+          price,
+          categories: ['electronics']
+        })).to.eql([expected])
+      });
+      it('should apply a Food markup of 13%', ()=>{
+        const price = 100;
+        const expected = price * 0.13;
+        expect(JobPricer.getMarkupForCategories({
+          price,
+          categories: ['food']
+        })).to.eql([expected])
+      });
+      it('should apply a Pharma markup of 7.5%', ()=>{
+        const price = 100;
+        const expected = price * 0.075;
+        expect(JobPricer.getMarkupForCategories({
+          price,
+          categories: ['pharma']
+        })).to.eql([expected])
+      });
+    });
     });
   });
 });
