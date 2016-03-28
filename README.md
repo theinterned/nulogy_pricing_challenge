@@ -51,6 +51,6 @@ $12456.95
 books
 
 
-Output 1: $1591.58
-Output 2: $6199.81
-Output 3: $13707.63
+Output 1: $1591.58  
+Output 2: $6199.81  
+Output 3: $13707.63  

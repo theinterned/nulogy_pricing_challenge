@@ -1,18 +1,22 @@
+"use strict";
 process.env.NODE_ENV = 'test';
 
 var mocha = require('mocha');
 var chai = require('chai');
 var expect = chai.expect;
 
-var App = require('../src/js/')
+var JobPricer = require('../src/js/')
 
-describe('App', function(){
-  it('should be an object', function(){
-    expect(App).to.be.a('Object');
+describe('JobPricer', ()=> {
+  it('should be an Class', ()=> {
+    expect(JobPricer).to.be.a('function');
+    expect(JobPricer).to.respondTo('constructor');
   });
-  it('should have this shape', function(){
-    expect(App).to.eql({
-      foo: 'bar'
-    })
+  it('should apply a flat markup to all jobs of 5%', ()=> {
+    const price = 100;
+    let result = JobPricer.flatMarkup(price);
+    expect(result).to.equal(100 * 1.05);
+    result = JobPricer.calculate({price});
+    expect(result).to.equal(100 * 1.05);
   });
 });

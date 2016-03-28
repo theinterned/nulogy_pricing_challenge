@@ -9,7 +9,7 @@ var jsFiles = jsDir+"*.js";
 var testDir = "test/"
 
 gulp.task('test', function () {
-  util.log('TESTTESTTESTTESTTEST');
+  util.log('TESTTESTTESTTESTTESTTESTTESTTESTTESTTEST');
   return gulp.src([testDir+"**/*"], { read: false })
     .pipe(mocha({ reporter: 'spec' }))
     .on('error', util.log);
