@@ -6,6 +6,28 @@ class JobPricer {
    * @param  {[Object]} options         All args are passed as an object of named args
    * @return {[Float]}  options.price   This is the base Job Price that the markup will be calcualted on top of.
    */
+  static get markup() {
+    return 0.05;
+  }
+  static get markupPerPerson() {
+    return 0.012;
+  }
+  static get markupForElectronics() {
+    return 0.02;
+  }
+  static get markupForFood() {
+    return 0.13;
+  }
+  static get markupForPharma() {
+    return 0.075;
+  }
+  static get categoryMarkupMap() {
+    return {
+      electronics : this.markupForElectronics,
+      food        : this.markupForFood,
+      pharma      : this.markupForPharma
+    }
+  }
   static calculate(options) {
     const defaults = {
       price: 0,
@@ -42,9 +64,7 @@ class JobPricer {
     }
     return markup * price;
   }
-  static get markup() {
-    return 0.05;
-  }
+
   static getFlatMarkup(basePrice) {
     if (!(typeof basePrice === 'number')) {
       throw new TypeError(`Markup must be a number, got ${basePrice} which is typeof ${typeof basePrice} instead`);
@@ -52,9 +72,7 @@ class JobPricer {
     let markup = basePrice * this.markup;
     return markup;
   }
-  static get markupPerPerson() {
-    return 0.012;
-  }
+
   static getPeopleMarkup(options){
     const people = options.people;
     if (!(typeof people === 'number')) {
@@ -62,22 +80,6 @@ class JobPricer {
     }
     const markup = this.calculateMarkupForPrice(options.people * this.markupPerPerson, options);
     return markup;
-  }
-  static get markupForElectronics() {
-    return 0.02;
-  }
-  static get markupForFood() {
-    return 0.13;
-  }
-  static get markupForPharma() {
-    return 0.075;
-  }
-  static get categoryMarkupMap() {
-    return {
-      electronics : this.markupForElectronics,
-      food        : this.markupForFood,
-      pharma      : this.markupForPharma
-    }
   }
   static getMarkupForCategories(options) {
     if (typeof options === 'undefined' || typeof options.categories === 'undefined') {
