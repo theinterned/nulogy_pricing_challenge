@@ -153,7 +153,14 @@ describe('JobPricer', ()=> {
           categories: ['pharma']
         })).to.eql([expected])
       });
-      it('should return the markups in the same order the categories are given');
+      it('should return the markups in the same order the categories are given', ()=>{
+        const price = 100;
+        const electronicsMarkup = price * JobPricer.markupForElectronics;
+        const foodMarkup = price * JobPricer.markupForFood;
+        const pharmaMarkup = price * JobPricer.markupForPharma;
+        expect(JobPricer.getMarkupForCategories({price, categories:['food', 'pharma', 'electronics']})).to.eql([foodMarkup, pharmaMarkup, electronicsMarkup]);
+        expect(JobPricer.getMarkupForCategories({price, categories:['pharma', 'electronics', 'food']})).to.eql([pharmaMarkup, electronicsMarkup, foodMarkup]);
+      });
       it('should not apply the same markup multiple times even if the category appears in options.categories many times');
       it("should not apply a markup for a category that isn't defined");
     });
