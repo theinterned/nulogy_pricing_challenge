@@ -26,6 +26,21 @@ describe('JobPricer', ()=> {
       'drugs'      : JobPricer.markupForDrugs
     })
   });
+  describe("#round", ()=>{
+    it("should round a float to at most 2 decimal places", ()=>{
+      expect(JobPricer.round(1.33333)).to.equal(1.33);
+      expect(JobPricer.round(1.3)).to.equal(1.3);
+      expect(JobPricer.round(1)).to.equal(1);
+    });
+    it("should round up if the 3rd decimal => 5", ()=>{
+      expect(JobPricer.round(1.33333)).to.equal(1.33);
+      expect(JobPricer.round(1.33353)).to.equal(1.33);
+      expect(JobPricer.round(1.33533)).to.equal(1.34);
+    });
+    it("should validate that the passed number is a number", ()=>{
+      expect( ()=> JobPricer.round("1") ).to.throw(TypeError);
+    });
+  });
   describe('#calculateMarkupForPrice', ()=>{
     it('should accept price as a number', ()=>{
       expect(JobPricer.calculateMarkupForPrice(0.10, 100)).to.equal(10);
