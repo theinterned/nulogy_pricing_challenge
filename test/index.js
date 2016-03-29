@@ -267,7 +267,7 @@ describe('JobPricer', ()=> {
         people: 4,
         categories: ['books']
       }
-      const expected3 = 6199.81;
+      const expected3 = 13707.63;
       it(`should produce the output $${expected3}`, ()=>{
         const actual = JobPricer.calculate(input3);
         expect(actual).to.equal(expected3);
