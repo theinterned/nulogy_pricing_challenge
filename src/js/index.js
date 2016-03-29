@@ -71,11 +71,17 @@ class JobPricer {
       return [];
     }
     const categories = options.categories;
+    let handledCats = {};
     const markups = categories.map((cat)=>{
-      let markup = this.categoryMarkupMap[cat];
-      markup = this.calculateMarkupForPrice(markup, options);
-      return markup;
-    });
+      if(typeof handledCats[cat] === "undefined") {
+        handledCats[cat] = true;
+        let markup = this.categoryMarkupMap[cat];
+        markup = this.calculateMarkupForPrice(markup, options);
+        return markup;
+      } else {
+        return false;
+      }
+    }).filter((cat)=>{ return cat});
     return markups;
   }
 }

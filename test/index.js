@@ -161,7 +161,13 @@ describe('JobPricer', ()=> {
         expect(JobPricer.getMarkupForCategories({price, categories:['food', 'pharma', 'electronics']})).to.eql([foodMarkup, pharmaMarkup, electronicsMarkup]);
         expect(JobPricer.getMarkupForCategories({price, categories:['pharma', 'electronics', 'food']})).to.eql([pharmaMarkup, electronicsMarkup, foodMarkup]);
       });
-      it('should not apply the same markup multiple times even if the category appears in options.categories many times');
+      it('should not apply the same markup multiple times even if the category appears in options.categories many times', ()=>{
+        const price = 100;
+        const actual = JobPricer.getMarkupForCategories({price, categories:['food', 'food', 'food']});
+        expect(actual.length).to.equal(1);
+        const actual2 = JobPricer.getMarkupForCategories({price, categories:['food', 'food', 'pharma', 'electronics', 'food', 'pharma']});
+        expect(actual2.length).to.equal(3);
+      });
       it("should not apply a markup for a category that isn't defined");
     });
     describe('#calculate should apply the material markups', ()=>{
