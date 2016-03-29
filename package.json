@@ -2,10 +2,6 @@
   "name": "nulogy_pricing_challenge",
   "version": "1.0.0",
   "description": "Coding challenge for Nulogy job application",
-  "main": "index.js",
-  "scripts": {
-    "test": "npm test"
-  },
   "author": "Ned Schwartz",
   "license": "ISC",
   "devDependencies": {
@@ -15,9 +11,10 @@
     "gulp-util": "^3.0.7",
     "mocha": "^2.4.5"
   },
+  "engines" : { "node" : ">=5.6.0" },
   "scripts": {
     "test": "gulp test",
     "test-watch": "gulp test-watch",
-    "start": "gulp start"
+    "start": "gulp test"
   }
 }
