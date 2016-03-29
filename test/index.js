@@ -5,7 +5,7 @@ var mocha = require('mocha');
 var chai = require('chai');
 var expect = chai.expect;
 
-var JobPricer = require('../src/js/')
+var JobPricer = require('../src/js/job_pricer')
 
 describe('JobPricer', ()=> {
   it('should be an Class', ()=> {
