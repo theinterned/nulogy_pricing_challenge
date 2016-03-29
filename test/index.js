@@ -236,4 +236,42 @@ describe('JobPricer', ()=> {
       expect(actual).to.equal(expected);
     });
   });
+  describe("Fitness tests", ()=>{
+    describe("Input 1", ()=>{
+      const input1 = {
+        price: 1299.99,
+        people: 3,
+        categories: ['food']
+      }
+      const expected1 = 1531.58;
+      it(`should produce the output $${expected1}`, ()=>{
+        const actual = JobPricer.calculate(input1);
+        expect(actual).to.equal(expected1)
+      });
+    });
+    describe("Input 2", ()=>{
+      const input2 = {
+        price: 5432.00,
+        people: 1,
+        categories: ['drugs']
+      }
+      const expected2 = 6199.81;
+      it(`should produce the output $${expected2}`, ()=>{
+        const actual = JobPricer.calculate(input2);
+        expect(actual).to.equal(expected2);
+      });
+    });
+    describe("Input 3", ()=>{
+      const input3 = {
+        price: 12456.95,
+        people: 4,
+        categories: ['books']
+      }
+      const expected3 = 6199.81;
+      it(`should produce the output $${expected3}`, ()=>{
+        const actual = JobPricer.calculate(input3);
+        expect(actual).to.equal(expected3);
+      });
+    });
+  });
 });
