@@ -79,7 +79,7 @@ describe('JobPricer', ()=> {
         expect( ()=> JobPricer.getFlatMarkup(1) ).not.to.throw(TypeError);
       });
     });
-    it('#calculate should flat markup of 5% to final calculation', ()=> {
+    it('#calculate should add a flat markup of 5% to final calculation', ()=> {
       const price = 100;
       let result = JobPricer.calculate({price});
       expect(result).to.equal(100 * 1.05);
@@ -102,9 +102,9 @@ describe('JobPricer', ()=> {
           price,
           people: 10
         };
-        const expected1 = markupPerPerson * price;
-        const expected2 = (markupPerPerson * job2.people) * price;
-        const expected10 = (markupPerPerson * job10.people) * price;
+        const expected1 = markupPerPerson;
+        const expected2 = (markupPerPerson * job2.people);
+        const expected10 = (markupPerPerson * job10.people);
         let actual1 = JobPricer.getPeopleMarkup(job1);
         let actual2 = JobPricer.getPeopleMarkup(job2);
         let actual10 = JobPricer.getPeopleMarkup(job10);
@@ -167,15 +167,15 @@ describe('JobPricer', ()=> {
         }
         const actual = JobPricer.getMarkupForCategories(options);
         const expected = [
-          options.price * JobPricer.markupForElectronics,
-          options.price * JobPricer.markupForFood,
-          options.price * JobPricer.markupForDrugs
+          JobPricer.markupForElectronics,
+          JobPricer.markupForFood,
+          JobPricer.markupForDrugs
         ];
         expect(actual).to.eql(expected);
       });
       it('should apply a Electronics markup of 2%', ()=>{
         const price = 100;
-        const expected = price * 0.02;
+        const expected = 0.02;
         expect(JobPricer.getMarkupForCategories({
           price,
           categories: ['electronics']
@@ -183,7 +183,7 @@ describe('JobPricer', ()=> {
       });
       it('should apply a Food markup of 13%', ()=>{
         const price = 100;
-        const expected = price * 0.13;
+        const expected = 0.13;
         expect(JobPricer.getMarkupForCategories({
           price,
           categories: ['food']
@@ -191,7 +191,7 @@ describe('JobPricer', ()=> {
       });
       it('should apply a Drugs markup of 7.5%', ()=>{
         const price = 100;
-        const expected = price * 0.075;
+        const expected = 0.075;
         expect(JobPricer.getMarkupForCategories({
           price,
           categories: ['drugs']
@@ -199,9 +199,9 @@ describe('JobPricer', ()=> {
       });
       it('should return the markups in the same order the categories are given', ()=>{
         const price = 100;
-        const electronicsMarkup = price * JobPricer.markupForElectronics;
-        const foodMarkup = price * JobPricer.markupForFood;
-        const drugsMarkup = price * JobPricer.markupForDrugs;
+        const electronicsMarkup = JobPricer.markupForElectronics;
+        const foodMarkup = JobPricer.markupForFood;
+        const drugsMarkup = JobPricer.markupForDrugs;
         expect(JobPricer.getMarkupForCategories({price, categories:['food', 'drugs', 'electronics']})).to.eql([foodMarkup, drugsMarkup, electronicsMarkup]);
         expect(JobPricer.getMarkupForCategories({price, categories:['drugs', 'electronics', 'food']})).to.eql([drugsMarkup, electronicsMarkup, foodMarkup]);
       });

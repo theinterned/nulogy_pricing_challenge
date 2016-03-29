@@ -79,7 +79,7 @@ class JobPricer {
     // and boil it down
     const categoryMarkup = categoryMarkupList.reduce((prev, curr) => prev + curr, 0);
     // the final calculation
-    const markup = this.round(flatMarkup + peopleMarkup + categoryMarkup);
+    const markup = this.round(flatMarkup + this.calculateMarkupForPrice(peopleMarkup + categoryMarkup, calculation));
     return markup;
   }
   /**
@@ -130,7 +130,7 @@ class JobPricer {
     if (!(typeof people === 'number')) {
       throw new TypeError(`Markup must be a number, got ${people} which is typeof ${typeof people} instead`);
     }
-    const markup = this.calculateMarkupForPrice(options.people * this.markupPerPerson, options);
+    const markup = (options.people * this.markupPerPerson);
     return markup;
   }
   /**
@@ -149,7 +149,6 @@ class JobPricer {
         handledCats[cat] = true;
         let markup = this.categoryMarkupMap[cat];
         if(typeof markup !== 'number') { return false; }
-        markup = this.calculateMarkupForPrice(markup, options);
         return markup;
       }
       return false;
