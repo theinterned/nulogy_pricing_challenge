@@ -43,12 +43,26 @@ describe('JobPricer', ()=> {
         price:200
       })).to.equal(10);
     });
+    it('should validate that the passed markup is a number', ()=>{
+      expect( ()=> JobPricer.calculateMarkupForPrice("one", 10) ).to.throw(TypeError);
+      expect( ()=> JobPricer.calculateMarkupForPrice(1, 10) ).not.to.throw(TypeError);
+    });
+    it('should validate that the passed price is a number', ()=>{
+      expect( ()=> JobPricer.calculateMarkupForPrice(1, { price:"ten" }) ).to.throw(TypeError);
+      expect( ()=> JobPricer.calculateMarkupForPrice(1, { price:10 }) ).not.to.throw(TypeError);
+    });
   });
   describe('FLAT MARKUP of 5%', ()=>{
-    it('#getFlatMarkup should apply a flat markup to all jobs of 5%', ()=> {
-      const price = 100;
-      let result = JobPricer.getFlatMarkup(price);
-      expect(result).to.equal(100 * 0.05);
+    describe('#getFlatMarkup', ()=>{
+      it('should apply a flat markup to all jobs of 5%', ()=> {
+        const price = 100;
+        let result = JobPricer.getFlatMarkup(price);
+        expect(result).to.equal(100 * 0.05);
+      });
+      it('should validate that the passed basePrice is a number', ()=> {
+        expect( ()=> JobPricer.getFlatMarkup("1") ).to.throw(TypeError);
+        expect( ()=> JobPricer.getFlatMarkup(1) ).not.to.throw(TypeError);
+      });
     });
     it('#calculate should flat markup of 5% to final calculation', ()=> {
       const price = 100;
@@ -57,30 +71,45 @@ describe('JobPricer', ()=> {
     });
   });
   describe('Per-person markup of 1.2%', ()=>{
-    it('#getPeopleMarkup should apply a markup of 1.2% for each person that needs to work on the job', ()=> {
-      const price = 100;
-      const markupPerPerson = 0.012;
-      const job1 = {
-        price,
-        people: 1
-      };
-      const job2 = {
-        price,
-        people: 2
-      };
-      const job10 = {
-        price,
-        people: 10
-      };
-      const expected1 = markupPerPerson * price;
-      const expected2 = (markupPerPerson * job2.people) * price;
-      const expected10 = (markupPerPerson * job10.people) * price;
-      let actual1 = JobPricer.getPeopleMarkup(job1);
-      let actual2 = JobPricer.getPeopleMarkup(job2);
-      let actual10 = JobPricer.getPeopleMarkup(job10);
-      expect(actual1).to.equal(expected1);
-      expect(actual2).to.equal(expected2);
-      expect(actual10).to.equal(expected10);
+    describe('#getPeopleMarkup', ()=>{
+      it('#getPeopleMarkup should apply a markup of 1.2% for each person that needs to work on the job', ()=> {
+        const price = 100;
+        const markupPerPerson = 0.012;
+        const job1 = {
+          price,
+          people: 1
+        };
+        const job2 = {
+          price,
+          people: 2
+        };
+        const job10 = {
+          price,
+          people: 10
+        };
+        const expected1 = markupPerPerson * price;
+        const expected2 = (markupPerPerson * job2.people) * price;
+        const expected10 = (markupPerPerson * job10.people) * price;
+        let actual1 = JobPricer.getPeopleMarkup(job1);
+        let actual2 = JobPricer.getPeopleMarkup(job2);
+        let actual10 = JobPricer.getPeopleMarkup(job10);
+        expect(actual1).to.equal(expected1);
+        expect(actual2).to.equal(expected2);
+        expect(actual10).to.equal(expected10);
+      });
+      it('should validate that options.people is a number', ()=>{
+        const price = 1;
+        const yep = {
+          price,
+          people: 10
+        }
+        const nope = {
+          price,
+          people: "10"
+        }
+        expect( ()=> JobPricer.getPeopleMarkup(nope) ).to.throw(TypeError);
+        expect( ()=> JobPricer.getPeopleMarkup(yep) ).not.to.throw(TypeError);
+      });
     });
     it('#calculate should add the 1.2% per person markup to the flatMarkup', ()=>{
       const price = 100;

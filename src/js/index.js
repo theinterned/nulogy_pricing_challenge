@@ -34,12 +34,21 @@ class JobPricer {
         price = options;
         break;
     }
+    if (!(typeof markup === 'number')) {
+      throw new TypeError(`Markup must be a number, got ${markup} which is typeof ${typeof markup} instead`);
+    }
+    if (!(typeof price === 'number')) {
+      throw new TypeError(`Markup must be a number, got ${price} which is typeof ${typeof price} instead`);
+    }
     return markup * price;
   }
   static get markup() {
     return 0.05;
   }
   static getFlatMarkup(basePrice) {
+    if (!(typeof basePrice === 'number')) {
+      throw new TypeError(`Markup must be a number, got ${basePrice} which is typeof ${typeof basePrice} instead`);
+    }
     let markup = basePrice * this.markup;
     return markup;
   }
@@ -47,6 +56,10 @@ class JobPricer {
     return 0.012;
   }
   static getPeopleMarkup(options){
+    const people = options.people;
+    if (!(typeof people === 'number')) {
+      throw new TypeError(`Markup must be a number, got ${people} which is typeof ${typeof people} instead`);
+    }
     const markup = this.calculateMarkupForPrice(options.people * this.markupPerPerson, options);
     return markup;
   }
@@ -76,11 +89,11 @@ class JobPricer {
       if(typeof handledCats[cat] === "undefined") {
         handledCats[cat] = true;
         let markup = this.categoryMarkupMap[cat];
+        if(typeof markup !== 'number') { return false; }
         markup = this.calculateMarkupForPrice(markup, options);
         return markup;
-      } else {
-        return false;
       }
+      return false;
     }).filter((cat) => (cat === 0 || cat));
     return markups;
   }
