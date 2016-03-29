@@ -15,7 +15,7 @@ describe('JobPricer', ()=> {
   it('should expose the markup for each category on a getter', ()=>{
     expect(JobPricer).to.have.property('markup').that.equals(0.05);
     expect(JobPricer).to.have.property('markupPerPerson').that.equals(0.012);
-    expect(JobPricer).to.have.property('markupForPharma').that.equals(0.075);
+    expect(JobPricer).to.have.property('markupForDrugs').that.equals(0.075);
     expect(JobPricer).to.have.property('markupForFood').that.equals(0.13);
     expect(JobPricer).to.have.property('markupForElectronics').that.equals(0.02);
   });
@@ -23,7 +23,7 @@ describe('JobPricer', ()=> {
     expect(JobPricer).to.have.property('categoryMarkupMap').that.eqls({
       'electronics' : JobPricer.markupForElectronics,
       'food'        : JobPricer.markupForFood,
-      'pharma'      : JobPricer.markupForPharma
+      'drugs'      : JobPricer.markupForDrugs
     })
   });
   describe('#calculateMarkupForPrice', ()=>{
@@ -148,13 +148,13 @@ describe('JobPricer', ()=> {
       it('should map the array of categories to an array of calculated markups to apply', ()=>{
         const options = {
           price: 100,
-          categories: ['electronics', 'food', 'pharma']
+          categories: ['electronics', 'food', 'drugs']
         }
         const actual = JobPricer.getMarkupForCategories(options);
         const expected = [
           options.price * JobPricer.markupForElectronics,
           options.price * JobPricer.markupForFood,
-          options.price * JobPricer.markupForPharma
+          options.price * JobPricer.markupForDrugs
         ];
         expect(actual).to.eql(expected);
       });
@@ -174,27 +174,27 @@ describe('JobPricer', ()=> {
           categories: ['food']
         })).to.eql([expected])
       });
-      it('should apply a Pharma markup of 7.5%', ()=>{
+      it('should apply a Drugs markup of 7.5%', ()=>{
         const price = 100;
         const expected = price * 0.075;
         expect(JobPricer.getMarkupForCategories({
           price,
-          categories: ['pharma']
+          categories: ['drugs']
         })).to.eql([expected])
       });
       it('should return the markups in the same order the categories are given', ()=>{
         const price = 100;
         const electronicsMarkup = price * JobPricer.markupForElectronics;
         const foodMarkup = price * JobPricer.markupForFood;
-        const pharmaMarkup = price * JobPricer.markupForPharma;
-        expect(JobPricer.getMarkupForCategories({price, categories:['food', 'pharma', 'electronics']})).to.eql([foodMarkup, pharmaMarkup, electronicsMarkup]);
-        expect(JobPricer.getMarkupForCategories({price, categories:['pharma', 'electronics', 'food']})).to.eql([pharmaMarkup, electronicsMarkup, foodMarkup]);
+        const drugsMarkup = price * JobPricer.markupForDrugs;
+        expect(JobPricer.getMarkupForCategories({price, categories:['food', 'drugs', 'electronics']})).to.eql([foodMarkup, drugsMarkup, electronicsMarkup]);
+        expect(JobPricer.getMarkupForCategories({price, categories:['drugs', 'electronics', 'food']})).to.eql([drugsMarkup, electronicsMarkup, foodMarkup]);
       });
       it('should not apply the same markup multiple times even if the category appears in options.categories many times', ()=>{
         const price = 100;
         const actual = JobPricer.getMarkupForCategories({price, categories:['food', 'food', 'food']});
         expect(actual.length).to.equal(1);
-        const actual2 = JobPricer.getMarkupForCategories({price, categories:['food', 'food', 'pharma', 'electronics', 'food', 'pharma']});
+        const actual2 = JobPricer.getMarkupForCategories({price, categories:['food', 'food', 'drugs', 'electronics', 'food', 'drugs']});
         expect(actual2.length).to.equal(3);
       });
       it("should not apply a markup for a category that isn't defined", ()=>{
@@ -226,10 +226,10 @@ describe('JobPricer', ()=> {
       const price = 100;
       const flatPrice = JobPricer.getFlatMarkup(price) + price;
       const markupForFood = 0.13;
-      const markupForPharma = 0.075;
+      const markupForDrugs = 0.075;
       const job1 = {
         price,
-        categories: ['food', 'pharma']
+        categories: ['food', 'drugs']
       };
       const expected = (flatPrice * markupForFood) + (flatPrice * markupForPharma) + flatPrice;
       const actual = JobPricer.calculate(job1);

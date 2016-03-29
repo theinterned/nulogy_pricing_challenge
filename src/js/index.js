@@ -18,14 +18,14 @@ class JobPricer {
   static get markupForFood() {
     return 0.13;
   }
-  static get markupForPharma() {
+  static get markupForDrugs() {
     return 0.075;
   }
   static get categoryMarkupMap() {
     return {
       electronics : this.markupForElectronics,
       food        : this.markupForFood,
-      pharma      : this.markupForPharma
+      drugs      : this.markupForDrugs
     }
   }
   static calculate(options) {
