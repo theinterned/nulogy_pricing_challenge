@@ -1,3 +1,34 @@
+# Pricing Problem
+by [Ned Schwartz](http://theinterned.net) for [Nulogy](http://nulogy.com)
+
+My solution is written in Javascript (es6) and requires node and npm.
+
+## Running the project
+
+To run the project, `cd` to the project root and run:
+
+```bash
+$ npm i && npm start
+```
+This will install the dependencies and run the tests.
+
+## Run the tests
+
+```bash
+$ npm test
+```
+
+### Watch the tests
+
+To watch for changes to your source code and tests and continusouly test as you develop:
+
+```bash
+$ npm run test-watch
+```
+
+
+---
+
 Instructions
 ============
 
