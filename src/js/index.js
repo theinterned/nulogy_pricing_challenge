@@ -1,33 +1,63 @@
 "use strict";
 
+/**
+ * JobPricer is a class that calculates the markup charged for Jobs at NuPack.
+ * The class can be used entirely staticly, without constructing an instance as all methods are static.
+ */
 class JobPricer {
+  //////////////////////////////
+  /// Getters
+  //////////////////////////////
+  /**
+   * @return {Float} [description]
+   */
+  static get markup() {
+    return 0.05;
+  }
+  /**
+   * @return {Float} [description]
+   */
+  static get markupPerPerson() {
+    return 0.012;
+  }
+  /**
+   * @return {Float} [description]
+   */
+  static get markupForElectronics() {
+    return 0.02;
+  }
+  /**
+   * @return {Float} [description]
+   */
+  static get markupForFood() {
+    return 0.13;
+  }
+  /**
+   * @return {Float} [description]
+   */
+  static get markupForDrugs() {
+    return 0.075;
+  }
+  /**
+   * This is a hash to match category names to their markup amount
+   * @return {Object}
+   */
+  static get categoryMarkupMap() {
+    return {
+      electronics : this.markupForElectronics,
+      food        : this.markupForFood,
+      drugs       : this.markupForDrugs
+    }
+  }
+
+  //////////////////////////////
+  /// Calculation methods
+  //////////////////////////////
   /**
    * The main calculate routine - this is the entry point for the JobPricer Library
    * @param  {[Object]} options         All args are passed as an object of named args
    * @return {[Float]}  options.price   This is the base Job Price that the markup will be calcualted on top of.
    */
-  static get markup() {
-    return 0.05;
-  }
-  static get markupPerPerson() {
-    return 0.012;
-  }
-  static get markupForElectronics() {
-    return 0.02;
-  }
-  static get markupForFood() {
-    return 0.13;
-  }
-  static get markupForDrugs() {
-    return 0.075;
-  }
-  static get categoryMarkupMap() {
-    return {
-      electronics : this.markupForElectronics,
-      food        : this.markupForFood,
-      drugs      : this.markupForDrugs
-    }
-  }
   static calculate(options) {
     const defaults = {
       price: 0,
@@ -45,12 +75,6 @@ class JobPricer {
     // the final calculation
     const markup = flatMarkup + peopleMarkup + categoryMarkup;
     return this.round(markup);
-  }
-  static round(number) {
-    if (!(typeof number === 'number')) {
-      throw new TypeError(`Markup must be a number, got ${number} which is typeof ${typeof number} instead`);
-    }
-    return Math.round(number * 100) / 100;
   }
   static calculateMarkupForPrice(markup, options) {
     let price = 0;
@@ -70,7 +94,6 @@ class JobPricer {
     }
     return markup * price;
   }
-
   static getFlatMarkup(basePrice) {
     if (!(typeof basePrice === 'number')) {
       throw new TypeError(`Markup must be a number, got ${basePrice} which is typeof ${typeof basePrice} instead`);
@@ -78,7 +101,6 @@ class JobPricer {
     let markup = basePrice * this.markup;
     return markup;
   }
-
   static getPeopleMarkup(options){
     const people = options.people;
     if (!(typeof people === 'number')) {
@@ -104,6 +126,16 @@ class JobPricer {
       return false;
     }).filter((cat) => (cat === 0 || cat));
     return markups;
+  }
+
+  //////////////////////////////
+  /// Helpers
+  //////////////////////////////
+  static round(number) {
+    if (!(typeof number === 'number')) {
+      throw new TypeError(`Markup must be a number, got ${number} which is typeof ${typeof number} instead`);
+    }
+    return Math.round(number * 100) / 100;
   }
 }
 
