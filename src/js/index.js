@@ -81,7 +81,7 @@ class JobPricer {
       } else {
         return false;
       }
-    }).filter((cat)=>{ return cat});
+    }).filter((cat) => (cat === 0 || cat));
     return markups;
   }
 }

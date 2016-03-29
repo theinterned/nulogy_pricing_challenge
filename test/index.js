@@ -168,7 +168,16 @@ describe('JobPricer', ()=> {
         const actual2 = JobPricer.getMarkupForCategories({price, categories:['food', 'food', 'pharma', 'electronics', 'food', 'pharma']});
         expect(actual2.length).to.equal(3);
       });
-      it("should not apply a markup for a category that isn't defined");
+      it("should not apply a markup for a category that isn't defined", ()=>{
+        const price = 100;
+        const actual = JobPricer.getMarkupForCategories({price, categories:['not a category', 'food']});
+        expect(actual.length).to.eql(1);
+      });
+      it("should return 0 for category whose markup == 0", ()=>{
+        const price = 0.0;
+        const actual = JobPricer.getMarkupForCategories({price, categories:['food']});
+        expect(actual.length).to.eql(1);
+      });
     });
     describe('#calculate should apply the material markups', ()=>{
       it('Should apply a single category markup to the fixedMarkup price', ()=>{
