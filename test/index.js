@@ -231,7 +231,7 @@ describe('JobPricer', ()=> {
         price,
         categories: ['food', 'drugs']
       };
-      const expected = (flatPrice * markupForFood) + (flatPrice * markupForPharma) + flatPrice;
+      const expected = JobPricer.round((flatPrice * markupForFood) + (flatPrice * markupForDrugs) + flatPrice);
       const actual = JobPricer.calculate(job1);
       expect(actual).to.equal(expected);
     });

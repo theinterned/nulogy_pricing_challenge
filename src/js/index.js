@@ -44,7 +44,13 @@ class JobPricer {
     const categoryMarkup = categoryMarkupList.reduce((prev, curr) => prev + curr, 0);
     // the final calculation
     const markup = flatMarkup + peopleMarkup + categoryMarkup;
-    return markup;
+    return this.round(markup);
+  }
+  static round(number) {
+    if (!(typeof number === 'number')) {
+      throw new TypeError(`Markup must be a number, got ${number} which is typeof ${typeof number} instead`);
+    }
+    return Math.round(number * 100) / 100;
   }
   static calculateMarkupForPrice(markup, options) {
     let price = 0;
